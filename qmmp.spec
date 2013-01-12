@@ -241,7 +241,7 @@ This contains basic plugin distribution.
 
 %if %{build_plf}
 %files -n %{name}-aac
-{_libdir}/%{name}/Input/libaac.so
+%{_libdir}/%{name}/Input/libaac.so
 %endif
 
 %files -n %{name}-plugins
@@ -296,119 +296,4 @@ This contains basic plugin distribution.
 %{_libdir}/%{name}/Visual/libprojectm.so
 
 %{_libdir}/%{name}/Ui/libskinned.so
-
-
-
-%changelog
-* Sat Aug 18 2012 Andrey Bondrov <abondrov@mandriva.org> 0.6.3-1
-+ Revision: 815295
-- New version 0.6.3, convert BR to pkgconfig style, add PLF build conditions
-
-* Thu Jul 26 2012 Alexander Khrukin <akhrukin@mandriva.org> 0.6.1-1
-+ Revision: 811157
-- version update 0.6.1
-
-  + Sergey Zhemoitel <serg@mandriva.org>
-    - update to 0.6.0
-    - drop aac decoder
-    - update to 0.5.5
-    - add new release 0.5.4. Correct spec from 2010.1 build and later
-    - new version 0.5.2
-    - new release 0.5.1, aac-plugin
-
-  + Götz Waschk <waschk@mandriva.org>
-    - rebuild for new libcdio
-
-* Fri May 20 2011 Funda Wang <fwang@mandriva.org> 0.5.1-1
-+ Revision: 676418
-- update file list
-- update to new version 0.5.1
-
-  + Sergey Zhemoitel <serg@mandriva.org>
-    - correct require wildmidi
-    - add require wildmidi
-    - add require wildmidi 0.2.3.4 version
-
-* Sat Mar 26 2011 Funda Wang <fwang@mandriva.org> 0.5.0-1
-+ Revision: 648585
-- update file list
-- new version 0.5.0
-
-* Sat Mar 12 2011 Funda Wang <fwang@mandriva.org> 0.4.5-1
-+ Revision: 644009
-- update to new version 0.4.5
-
-* Thu Nov 04 2010 Funda Wang <fwang@mandriva.org> 0.4.3-1mdv2011.0
-+ Revision: 593058
-- new version 0.4.3
-
-* Fri Oct 29 2010 Ahmad Samir <ahmadsamir@mandriva.org> 0.4.2-1mdv2011.0
-+ Revision: 589920
-- update to 0.4.2
-- clean spec and remove the "mdkversion < 200900" macros
-
-* Sun Jul 11 2010 Funda Wang <fwang@mandriva.org> 0.4.1-1mdv2011.0
-+ Revision: 550677
-- update file list
-- New version 0.4.1
-
-* Sun Jul 11 2010 Götz Waschk <waschk@mandriva.org> 0.3.4-2mdv2011.0
-+ Revision: 550644
-- rebuild for new libmodplug
-
-* Mon Apr 19 2010 Funda Wang <fwang@mandriva.org> 0.3.4-1mdv2010.1
-+ Revision: 536549
-- new version 0.3.4
-
-* Thu Mar 11 2010 Funda Wang <fwang@mandriva.org> 0.3.3-1mdv2010.1
-+ Revision: 517894
-- New version 0.3.3
-
-* Mon Jan 18 2010 Frederik Himpe <fhimpe@mandriva.org> 0.3.2-1mdv2010.1
-+ Revision: 493275
-- update to new version 0.3.2
-
-* Mon Nov 09 2009 Funda Wang <fwang@mandriva.org> 0.3.1-1mdv2010.1
-+ Revision: 463500
-- new version 0.3.1
-
-* Sun Jul 05 2009 Funda Wang <fwang@mandriva.org> 0.3.0-1mdv2010.0
-+ Revision: 392518
-- New version 0.3.0
-
-* Mon May 04 2009 Funda Wang <fwang@mandriva.org> 0.2.4-1mdv2010.0
-+ Revision: 371561
-- use ulong rather than uint
-- New version 0.2.4
-
-* Fri Dec 05 2008 Funda Wang <fwang@mandriva.org> 0.2.3-1mdv2009.1
-+ Revision: 310111
-- New versio n0.2.3
-- drop upstream patches
-
-* Sun Oct 19 2008 Funda Wang <fwang@mandriva.org> 0.2.2-3mdv2009.1
-+ Revision: 295181
-- rebuild for new ffmpeg
-
-* Tue Sep 02 2008 Funda Wang <fwang@mandriva.org> 0.2.2-2mdv2009.0
-+ Revision: 278804
-- add patch fixing parallel build and fixes for lib64
-- add patch (upstream) to build out of source
-
-* Sun Aug 31 2008 Funda Wang <fwang@mandriva.org> 0.2.2-1mdv2009.0
-+ Revision: 278050
-- New version 0.2.2
-
-* Tue Aug 05 2008 Funda Wang <fwang@mandriva.org> 0.2.0-2mdv2009.0
-+ Revision: 263664
-- add conflicts to ease upgrading
-- use cmake to build
-- New version 0.2.0
-- fix URL
-
-* Sat Jul 12 2008 Funda Wang <fwang@mandriva.org> 0.1.6-1mdv2009.0
-+ Revision: 234151
-- BR ffmpeg
-- import qmmp
-
 
