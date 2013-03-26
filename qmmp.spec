@@ -15,9 +15,10 @@
 %define extrarelsuffix plf
 %endif
 
+
 Summary:	Qt-based Multimedia Player
 Name:		qmmp
-Version:	0.6.7
+Version:	0.6.8
 Release:	1%{?extrarelsuffix}
 URL:		http://qmmp.ylsoftware.com/index_en.php
 Source:		http://qmmp.ylsoftware.com/files/%{name}-%{version}.tar.bz2
@@ -206,18 +207,22 @@ This contains basic plugin distribution.
 %{_datadir}/%{name}
 
 %files -n %{libname}
+%doc AUTHORS ChangeLog
 %{_libdir}/libqmmp.so.%{major}*
 
 %files -n %{libnameui}
+%doc AUTHORS ChangeLog
 %{_libdir}/libqmmpui.so.%{major}*
 
 %files -n %{libname_devel}
+%doc AUTHORS ChangeLog
 %{_includedir}/%{name}
 %{_libdir}/libqmmp.so
 %{_libdir}/pkgconfig/qmmpui.pc
 %{_libdir}/pkgconfig/qmmp.pc
 
 %files -n %{libnameui_devel}
+%doc AUTHORS ChangeLog
 %{_includedir}/qmmpui
 %{_libdir}/libqmmpui.so
 
@@ -225,22 +230,27 @@ This contains basic plugin distribution.
 %{_libdir}/%{name}/Output/libjack.so
 
 %files -n %{name}-oss
+%doc AUTHORS ChangeLog
 %{_libdir}/%{name}/Output/liboss.so
 
 %files -n %{name}-musepack
 %{_libdir}/%{name}/Input/libmpc.so
 
 %files -n %{name}-ffmpeg
+%doc AUTHORS ChangeLog
 %{_libdir}/%{name}/Input/libffmpeg.so
 
 %files -n %{name}-wavpack
+%doc AUTHORS ChangeLog
 %{_libdir}/%{name}/Input/libwavpack.so
 
 %files -n %{name}-modplug
+%doc AUTHORS ChangeLog
 %{_libdir}/%{name}/Input/libmodplug.so
 
 %if %{build_plf}
 %files -n %{name}-aac
+%doc AUTHORS ChangeLog
 %{_libdir}/%{name}/Input/libaac.so
 %endif
 
@@ -296,4 +306,7 @@ This contains basic plugin distribution.
 %{_libdir}/%{name}/Visual/libprojectm.so
 
 %{_libdir}/%{name}/Ui/libskinned.so
+
+
+
 
