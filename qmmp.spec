@@ -18,7 +18,7 @@
 
 Summary:	Qt-based Multimedia Player
 Name:		qmmp
-Version:	0.6.8
+Version:	0.7.0
 Release:	1%{?extrarelsuffix}
 URL:		http://qmmp.ylsoftware.com/index_en.php
 Source:		http://qmmp.ylsoftware.com/files/%{name}-%{version}.tar.bz2
@@ -148,13 +148,25 @@ Group:		Sound
 %description -n %{name}-musepack
 This is the Musepack Input Plugin for Qmmp
 
+#  ffmpeg-legacy in LTS
+%if %{mdvver} >= 201210
 %package -n %{name}-ffmpeg
 Summary:	Qmmp FFMPEG Input Plugin
 Group:		Sound
 
 %description -n %{name}-ffmpeg
 This is the FFMPEG Input Plugin for Qmmp
+#
+%else
+%package -n %{name}-ffmpeg-legacy
+Summary:	Qmmp FFMPEG Input Plugin
+Group:		Sound
 
+%description -n %{name}-ffmpeg-legacy
+This is the FFMPEG Input Plugin for Qmmp
+%endif
+
+#
 %package -n %{name}-wavpack
 Summary:	Qmmp WavPack Input Plugin
 Group:		Sound
@@ -175,7 +187,7 @@ Summary:	Qmmp AAC Input Plugin
 Group:		Sound
 
 %description -n %{name}-aac
-This is the AAC Input plugin for Qmmp
+This is the AAC Input plug-in for Qmmp
 
 This package is in restricted repository because AAC codec is patent-protected.
 %endif
@@ -186,14 +198,19 @@ Group:		Sound
 
 %description -n %{name}-plugins
 Qmmp is an audio-player, written with help of Qt library.
-This contains basic plugin distribution.
+This contains basic plug-in distribution.
 
 %prep
 %setup -q
 
 %build
 #oss3 support is deprecated upstream for now I'll enable it ...
-%cmake_qt4 -DUSE_HAL=OFF -DUSE_OSS:BOOL=TRUE
+%cmake_qt4 -DUSE_HAL:BOOL=FALSE \
+	-DUSE_OSS:BOOL=TRUE \
+	-DUSE_OSS:UDISKS2=TRUE \
+	-DUSE_RPATH=TRUE \
+	-DCMAKE_INSTALL_PREFIX=/usr
+
 %make
 
 %install
@@ -227,6 +244,7 @@ This contains basic plugin distribution.
 %{_libdir}/libqmmpui.so
 
 %files -n %{name}-jack
+%doc AUTHORS ChangeLog
 %{_libdir}/%{name}/Output/libjack.so
 
 %files -n %{name}-oss
@@ -234,12 +252,21 @@ This contains basic plugin distribution.
 %{_libdir}/%{name}/Output/liboss.so
 
 %files -n %{name}-musepack
+%doc AUTHORS ChangeLog
 %{_libdir}/%{name}/Input/libmpc.so
 
+# ffmpeg-legacy in LTS
+%if %{mdvver} >= 201210
 %files -n %{name}-ffmpeg
 %doc AUTHORS ChangeLog
 %{_libdir}/%{name}/Input/libffmpeg.so
-
+#
+%else
+%files -n %{name}-ffmpeg-legacy
+%doc AUTHORS ChangeLog
+%{_libdir}/%{name}/Input/libffmpeg_legacy.so
+%endif
+#
 %files -n %{name}-wavpack
 %doc AUTHORS ChangeLog
 %{_libdir}/%{name}/Input/libwavpack.so
@@ -255,6 +282,7 @@ This contains basic plugin distribution.
 %endif
 
 %files -n %{name}-plugins
+%doc AUTHORS ChangeLog
 %{_libdir}/%{name}/Input/libflac.so
 %{_libdir}/%{name}/Input/libmad.so
 %{_libdir}/%{name}/Input/libsndfile.so
@@ -263,6 +291,9 @@ This contains basic plugin distribution.
 %{_libdir}/%{name}/Input/libcue.so
 %{_libdir}/%{name}/Input/libgme.so
 %{_libdir}/%{name}/Input/libwildmidi.so
+
+
+
 
 %{_libdir}/%{name}/Output/libalsa.so
 %{_libdir}/%{name}/Output/libpulseaudio.so
@@ -277,10 +308,15 @@ This contains basic plugin distribution.
 %{_libdir}/%{name}/General/libmpris.so
 %{_libdir}/%{name}/General/libcovermanager.so
 %{_libdir}/%{name}/General/libkdenotify.so
-%{_libdir}/%{name}/General/libudisks.so
-%{_libdir}/%{name}/General/libconverter.so
 %{_libdir}/%{name}/Engines/libmplayer.so
 %{_libdir}/%{name}/General/libstreambrowser.so
+%{_libdir}/%{name}/General/libconverter.so
+%{_libdir}/%{name}/General/libcopypaste.so
+%{_libdir}/%{name}/General/libtrackchange.so
+%{_libdir}/%{name}/General/libudisks2.so
+
+%{_libdir}/%{name}/PlayListFormats/*
+
 
 %{_libdir}/%{name}/CommandLineOptions/libincdecvolumeoption.so
 %{_libdir}/%{name}/CommandLineOptions/libseekoption.so
@@ -294,10 +330,6 @@ This contains basic plugin distribution.
 %{_libdir}/%{name}/Effect/libstereo.so
 
 %{_libdir}/%{name}/FileDialogs/libqmmpfiledialog.so
-
-%{_libdir}/%{name}/PlaylistFormats/libm3uplaylistformat.so
-%{_libdir}/%{name}/PlaylistFormats/libplsplaylistformat.so
-%{_libdir}/%{name}/PlaylistFormats/libxspfplaylistformat.so
 
 %{_libdir}/%{name}/Transports/libhttp.so
 %{_libdir}/%{name}/Transports/libmms.so
