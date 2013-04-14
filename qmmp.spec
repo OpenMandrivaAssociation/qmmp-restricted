@@ -19,7 +19,7 @@
 Summary:	Qt-based Multimedia Player
 Name:		qmmp
 Version:	0.7.0
-Release:	1%{?extrarelsuffix}
+Release:	2%{?extrarelsuffix}
 URL:		http://qmmp.ylsoftware.com/index_en.php
 Source:		http://qmmp.ylsoftware.com/files/%{name}-%{version}.tar.bz2
 License:	GPLv2+
@@ -161,6 +161,7 @@ This is the FFMPEG Input Plugin for Qmmp
 %package -n %{name}-ffmpeg-legacy
 Summary:	Qmmp FFMPEG Input Plugin
 Group:		Sound
+Obsoletes:  %{name}-ffmpeg
 
 %description -n %{name}-ffmpeg-legacy
 This is the FFMPEG Input Plugin for Qmmp
