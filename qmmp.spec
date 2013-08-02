@@ -15,12 +15,11 @@
 %define extrarelsuffix plf
 %endif
 
-
 Summary:	Qt-based Multimedia Player
 Name:		qmmp
 Version:	0.7.1
-Release:	1%{?extrarelsuffix}
-URL:		http://qmmp.ylsoftware.com/index_en.php
+Release:	2%{?extrarelsuffix}
+Url:		http://qmmp.ylsoftware.com/index_en.php
 Source:		http://qmmp.ylsoftware.com/files/%{name}-%{version}.tar.bz2
 License:	GPLv2+
 Group:		Sound
