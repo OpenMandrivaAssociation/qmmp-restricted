@@ -1,5 +1,6 @@
 removed_sources:
   qmmp-0.7.2.tar.bz2: 052f5ca3bbb542c63f4f8e1e47a1c803ae3ed19a
   qmmp-0.7.3.tar.bz2: 95d8010fb847da729f574ac10eebb21109705ff1
-sources:
   qmmp-0.7.5.tar.bz2: 27599f88dabbb87955d42f879775c18e1675fc71
+sources:
+  qmmp-0.7.7.tar.bz2: fb61a2e93665b16bfab75d76d647fdf92976b32f
