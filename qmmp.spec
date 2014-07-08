@@ -16,7 +16,7 @@
 
 Summary:	Qt-based Multimedia Player
 Name:		qmmp
-Version:	0.7.7
+Version:	0.8.0
 Release:	1%{?extrarelsuffix}
 License:	GPLv2+
 Group:		Sound
@@ -49,6 +49,16 @@ BuildRequires:	pkgconfig(taglib)
 BuildRequires:	pkgconfig(udisks)
 BuildRequires:	pkgconfig(vorbis)
 BuildRequires:	pkgconfig(wavpack)
+BuildRequires:	sidplay-devel
+BuildRequires:	pkgconfig(libsidplay2)
+# do not remove sdl-headers needed by sid-ogg.Sflo
+BuildRequires:	pkgconfig(sdl)
+BuildRequires:	pkgconfig(libsidplayfp)
+BuildRequires:	pkgconfig(opusfile)
+BuildRequires:	pkgconfig(opus)
+
+
+
 %if %{build_plf}
 BuildRequires:	libfaad2-devel
 %else
@@ -284,6 +294,30 @@ This is the WavPack Input Plugin for Qmmp.
 %{_libdir}/%{name}/Input/libwavpack.so
 
 #----------------------------------------------------------------------------
+%package -n %{name}-opus
+Summary:	Qmmp Opus Input Plugin
+Group:		Sound
+
+%description -n %{name}-opus
+This is the Opus Input Plugin for Qmmp.
+
+%files -n %{name}-opus
+%doc AUTHORS ChangeLog
+%{_libdir}/%{name}/Input/libopus.so
+
+#----------------------------------------------------------------------------
+%package -n %{name}-sid
+Summary:	Qmmp SID Input Plugin
+Group:		Sound
+
+%description -n %{name}-sid
+This is the SID Input Plugin for Qmmp.
+
+%files -n %{name}-sid
+%doc AUTHORS ChangeLog
+%{_libdir}/%{name}/Input/libsid.so
+
+#----------------------------------------------------------------------------
 
 %package -n %{name}-plugins
 Summary:	Qmmp Plugins
@@ -303,9 +337,11 @@ This contains basic plug-in distribution.
 %{_libdir}/%{name}/Input/libcue.so
 %{_libdir}/%{name}/Input/libgme.so
 %{_libdir}/%{name}/Input/libwildmidi.so
+
 %{_libdir}/%{name}/Output/libalsa.so
 %{_libdir}/%{name}/Output/libpulseaudio.so
 %{_libdir}/%{name}/Output/libnull.so
+
 %{_libdir}/%{name}/General/libnotifier.so
 %{_libdir}/%{name}/General/libscrobbler.so
 %{_libdir}/%{name}/General/libstatusicon.so
@@ -315,27 +351,37 @@ This contains basic plug-in distribution.
 %{_libdir}/%{name}/General/libmpris.so
 %{_libdir}/%{name}/General/libcovermanager.so
 %{_libdir}/%{name}/General/libkdenotify.so
-%{_libdir}/%{name}/Engines/libmplayer.so
 %{_libdir}/%{name}/General/libstreambrowser.so
 %{_libdir}/%{name}/General/libconverter.so
 %{_libdir}/%{name}/General/libcopypaste.so
 %{_libdir}/%{name}/General/libtrackchange.so
 %{_libdir}/%{name}/General/libudisks2.so
+%{_libdir}/%{name}/General/libgnomehotkey.so
+%{_libdir}/%{name}/General/librgscan.so
+
 %{_libdir}/%{name}/PlayListFormats/*
+
 %{_libdir}/%{name}/CommandLineOptions/libincdecvolumeoption.so
 %{_libdir}/%{name}/CommandLineOptions/libseekoption.so
 %{_libdir}/%{name}/CommandLineOptions/libstatusoption.so
 %{_libdir}/%{name}/CommandLineOptions/libplaylistoption.so
+
 %{_libdir}/%{name}/Effect/libsrconverter.so
 %{_libdir}/%{name}/Effect/libbs2b.so
 %{_libdir}/%{name}/Effect/libladspa.so
 %{_libdir}/%{name}/Effect/libcrossfade.so
 %{_libdir}/%{name}/Effect/libstereo.so
+
+%{_libdir}/%{name}/Engines/libmplayer.so
+
 %{_libdir}/%{name}/FileDialogs/libqmmpfiledialog.so
+
 %{_libdir}/%{name}/Transports/libhttp.so
 %{_libdir}/%{name}/Transports/libmms.so
+
 %{_libdir}/%{name}/Visual/libanalyzer.so
 %{_libdir}/%{name}/Visual/libprojectm.so
+
 %{_libdir}/%{name}/Ui/libskinned.so
 
 #----------------------------------------------------------------------------
@@ -355,4 +401,3 @@ This contains basic plug-in distribution.
 
 %install
 %makeinstall_std -C build
-
