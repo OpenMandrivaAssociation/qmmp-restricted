@@ -16,19 +16,20 @@
 
 Summary:	Qt-based Multimedia Player
 Name:		qmmp
-Version:	0.8.0
-Release:	1%{?extrarelsuffix}
+Version:	0.8.3
+Release:	2%{?extrarelsuffix}
 License:	GPLv2+
 Group:		Sound
 Url:		http://qmmp.ylsoftware.com/index_en.php
 Source:		http://qmmp.ylsoftware.com/files/%{name}-%{version}.tar.bz2
 
 BuildRequires:	cmake
-BuildRequires:	ffmpeg-devel
+BuildRequires:	ffmpeg-devel >= 2.5.4
 BuildRequires:	libgme-devel
 BuildRequires:	libmpcdec-devel
 BuildRequires:	qt4-devel
 BuildRequires:	qt4-linguist
+BuildRequires:	sidplay-devel
 BuildRequires:	wildmidi-devel
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(enca)
@@ -42,29 +43,25 @@ BuildRequires:	pkgconfig(libmms)
 BuildRequires:	pkgconfig(libmodplug)
 BuildRequires:	pkgconfig(libprojectM)
 BuildRequires:	pkgconfig(libpulse)
+BuildRequires:	pkgconfig(libsidplay2)
+BuildRequires:	pkgconfig(libsidplayfp)
 BuildRequires:	pkgconfig(mad)
+BuildRequires:	pkgconfig(opus)
+BuildRequires:	pkgconfig(opusfile)
 BuildRequires:	pkgconfig(samplerate)
+# do not remove sdl-headers needed by sid-ogg.Sflo
+BuildRequires:	pkgconfig(sdl)
 BuildRequires:	pkgconfig(sndfile)
 BuildRequires:	pkgconfig(taglib)
 BuildRequires:	pkgconfig(udisks)
 BuildRequires:	pkgconfig(vorbis)
 BuildRequires:	pkgconfig(wavpack)
-BuildRequires:	sidplay-devel
-BuildRequires:	pkgconfig(libsidplay2)
-# do not remove sdl-headers needed by sid-ogg.Sflo
-BuildRequires:	pkgconfig(sdl)
-BuildRequires:	pkgconfig(libsidplayfp)
-BuildRequires:	pkgconfig(opusfile)
-BuildRequires:	pkgconfig(opus)
-
-
 
 %if %{build_plf}
 BuildRequires:	libfaad2-devel
 %else
 BuildConflicts:	libfaad2-devel
 %endif
-Requires:	unzip
 Requires:	%{libname} = %{EVRD}
 Requires:	%{libnameui} = %{EVRD}
 Requires:	%{name}-plugins = %{EVRD}
@@ -80,6 +77,7 @@ Suggests:	%{name}-musepack = %{EVRD}
 Suggests:	%{name}-oss = %{EVRD}
 Suggests:	%{name}-wavpack = %{EVRD}
 Suggests:	%{name}-plugin-pack
+Requires:	unzip
 Requires:	wildmidi
 
 %description
@@ -116,11 +114,11 @@ Main opportunities:
 
 #----------------------------------------------------------------------------
 
-%package -n	%{libname}
-Group:		System/Libraries
+%package -n %{libname}
 Summary:	Library for %{name}
+Group:		System/Libraries
 
-%description -n	%{libname}
+%description -n %{libname}
 Qmmp is an audio-player, written with help of Qt library.
 This package contains the library needed by %{name}.
 
@@ -130,11 +128,11 @@ This package contains the library needed by %{name}.
 
 #----------------------------------------------------------------------------
 
-%package -n	%{libnameui}
-Group:		System/Libraries
+%package -n %{libnameui}
 Summary:	Library for %{name}
+Group:		System/Libraries
 
-%description -n	%{libnameui}
+%description -n %{libnameui}
 Qmmp is an audio-player, written with help of Qt library.
 This package contains the library needed by %{name}.
 
@@ -144,13 +142,13 @@ This package contains the library needed by %{name}.
 
 #----------------------------------------------------------------------------
 
-%package -n	%{devname}
+%package -n %{devname}
 Summary:	Development files for %{name}
 Group:		Development/C
 Requires:	%{libname} = %{EVRD}
 Provides:	%{name}-devel = %{EVRD}
 
-%description -n	%{devname}
+%description -n %{devname}
 Qmmp is an audio-player, written with help of Qt library.
 This package contains the files needed for developing applications
 which use %{name}.
@@ -163,14 +161,14 @@ which use %{name}.
 
 #----------------------------------------------------------------------------
 
-%package -n	%{devnameui}
+%package -n %{devnameui}
 Summary:	Development files for %{name}
 Group:		Development/C
 Requires:	%{libnameui} = %{EVRD}
 Provides:	%{name}ui-devel = %{EVRD}
 Conflicts:	%{_lib}qmmp-devel < 0.7.2
 
-%description -n	%{devnameui}
+%description -n %{devnameui}
 Qmmp is an audio-player, written with help of Qt library.
 This package contains the files needed for developing applications
 which use %{name}.
@@ -184,16 +182,16 @@ which use %{name}.
 #----------------------------------------------------------------------------
 
 %if %{build_plf}
-%package -n %{name}-aac
+%package aac
 Summary:	Qmmp AAC Input Plugin
 Group:		Sound
 
-%description -n %{name}-aac
+%description aac
 This is the AAC Input plug-in for Qmmp.
 
 This package is in restricted repository because AAC codec is patent-protected.
 
-%files -n %{name}-aac
+%files aac
 %doc AUTHORS ChangeLog
 %{_libdir}/%{name}/Input/libaac.so
 %endif
@@ -202,132 +200,107 @@ This package is in restricted repository because AAC codec is patent-protected.
 
 #  ffmpeg-legacy in LTS
 %if %{mdvver} >= 201210
-%package -n %{name}-ffmpeg
+%package ffmpeg
 Summary:	Qmmp FFMPEG Input Plugin
 Group:		Sound
 
-%description -n %{name}-ffmpeg
+%description ffmpeg
 This is the FFMPEG Input Plugin for Qmmp.
 
-%files -n %{name}-ffmpeg
+%files ffmpeg
 %doc AUTHORS ChangeLog
 %{_libdir}/%{name}/Input/libffmpeg.so
 
 %else
 
-%package -n %{name}-ffmpeg-legacy
+%package ffmpeg-legacy
 Summary:	Qmmp FFMPEG Input Plugin
 Group:		Sound
 
-%description -n %{name}-ffmpeg-legacy
+%description ffmpeg-legacy
 This is the FFMPEG Input Plugin for Qmmp.
 
-%files -n %{name}-ffmpeg-legacy
+%files ffmpeg-legacy
 %doc AUTHORS ChangeLog
 %{_libdir}/%{name}/Input/libffmpeg_legacy.so
 %endif
 
 #----------------------------------------------------------------------------
 
-%package -n %{name}-jack
+%package jack
 Summary:	Qmmp Jack Output Plugin
 Group:		Sound
 
-%description -n %{name}-jack
+%description jack
 This is the Jack Output Plugin for Qmmp.
 
-%files -n %{name}-jack
+%files jack
 %doc AUTHORS ChangeLog
 %{_libdir}/%{name}/Output/libjack.so
 
-
 #----------------------------------------------------------------------------
 
-%package -n %{name}-modplug
+%package modplug
 Summary:	Qmmp Modplug Input Plugin
 Group:		Sound
 
-%description -n %{name}-modplug
+%description modplug
 This is the Modplug Input Plugin for Qmmp.
 
-%files -n %{name}-modplug
+%files modplug
 %doc AUTHORS ChangeLog
 %{_libdir}/%{name}/Input/libmodplug.so
 
 #----------------------------------------------------------------------------
 
-%package -n %{name}-musepack
+%package musepack
 Summary:	Qmmp MusePack Output Plugin
 Group:		Sound
 
-%description -n %{name}-musepack
+%description musepack
 This is the Musepack Input Plugin for Qmmp.
 
-%files -n %{name}-musepack
+%files musepack
 %doc AUTHORS ChangeLog
 %{_libdir}/%{name}/Input/libmpc.so
 
 #----------------------------------------------------------------------------
-
-%package -n %{name}-oss
-Summary:	Qmmp OSS Output Plugin
-Group:		Sound
-
-%description -n %{name}-oss
-This is the Jack OSS Plugin for Qmmp.
-
-%files -n %{name}-oss
-%doc AUTHORS ChangeLog
-%{_libdir}/%{name}/Output/liboss.so
-
-#----------------------------------------------------------------------------
-
-%package -n %{name}-wavpack
-Summary:	Qmmp WavPack Input Plugin
-Group:		Sound
-
-%description -n %{name}-wavpack
-This is the WavPack Input Plugin for Qmmp.
-
-%files -n %{name}-wavpack
-%doc AUTHORS ChangeLog
-%{_libdir}/%{name}/Input/libwavpack.so
-
-#----------------------------------------------------------------------------
-%package -n %{name}-opus
+%package opus
 Summary:	Qmmp Opus Input Plugin
 Group:		Sound
 
-%description -n %{name}-opus
+%description opus
 This is the Opus Input Plugin for Qmmp.
 
-%files -n %{name}-opus
+%files opus
 %doc AUTHORS ChangeLog
 %{_libdir}/%{name}/Input/libopus.so
 
 #----------------------------------------------------------------------------
-%package -n %{name}-sid
-Summary:	Qmmp SID Input Plugin
+
+%package oss
+Summary:	Qmmp OSS Output Plugin
 Group:		Sound
 
-%description -n %{name}-sid
-This is the SID Input Plugin for Qmmp.
+%description oss
+This is the Jack OSS Plugin for Qmmp.
 
-%files -n %{name}-sid
+%files oss
 %doc AUTHORS ChangeLog
-%{_libdir}/%{name}/Input/libsid.so
+%{_libdir}/%{name}/Output/liboss.so
+
 
 #----------------------------------------------------------------------------
 
-%package -n %{name}-plugins
+%package plugins
 Summary:	Qmmp Plugins
 Group:		Sound
 
-%description -n %{name}-plugins
+%description plugins
 Qmmp is an audio-player, written with help of Qt library.
 This contains basic plug-in distribution.
 
-%files -n %{name}-plugins
+%files plugins
 %doc AUTHORS ChangeLog
 %{_libdir}/%{name}/Input/libflac.so
 %{_libdir}/%{name}/Input/libmad.so
@@ -337,11 +310,9 @@ This contains basic plug-in distribution.
 %{_libdir}/%{name}/Input/libcue.so
 %{_libdir}/%{name}/Input/libgme.so
 %{_libdir}/%{name}/Input/libwildmidi.so
-
 %{_libdir}/%{name}/Output/libalsa.so
 %{_libdir}/%{name}/Output/libpulseaudio.so
 %{_libdir}/%{name}/Output/libnull.so
-
 %{_libdir}/%{name}/General/libnotifier.so
 %{_libdir}/%{name}/General/libscrobbler.so
 %{_libdir}/%{name}/General/libstatusicon.so
@@ -358,31 +329,48 @@ This contains basic plug-in distribution.
 %{_libdir}/%{name}/General/libudisks2.so
 %{_libdir}/%{name}/General/libgnomehotkey.so
 %{_libdir}/%{name}/General/librgscan.so
-
 %{_libdir}/%{name}/PlayListFormats/*
-
 %{_libdir}/%{name}/CommandLineOptions/libincdecvolumeoption.so
 %{_libdir}/%{name}/CommandLineOptions/libseekoption.so
 %{_libdir}/%{name}/CommandLineOptions/libstatusoption.so
 %{_libdir}/%{name}/CommandLineOptions/libplaylistoption.so
-
 %{_libdir}/%{name}/Effect/libsrconverter.so
 %{_libdir}/%{name}/Effect/libbs2b.so
 %{_libdir}/%{name}/Effect/libladspa.so
 %{_libdir}/%{name}/Effect/libcrossfade.so
 %{_libdir}/%{name}/Effect/libstereo.so
-
 %{_libdir}/%{name}/Engines/libmplayer.so
-
 %{_libdir}/%{name}/FileDialogs/libqmmpfiledialog.so
-
 %{_libdir}/%{name}/Transports/libhttp.so
 %{_libdir}/%{name}/Transports/libmms.so
-
 %{_libdir}/%{name}/Visual/libanalyzer.so
 %{_libdir}/%{name}/Visual/libprojectm.so
-
 %{_libdir}/%{name}/Ui/libskinned.so
+
+#----------------------------------------------------------------------------
+%package sid
+Summary:	Qmmp SID Input Plugin
+Group:		Sound
+
+%description sid
+This is the SID Input Plugin for Qmmp.
+
+%files sid
+%doc AUTHORS ChangeLog
+%{_libdir}/%{name}/Input/libsid.so
+
+#----------------------------------------------------------------------------
+
+%package wavpack
+Summary:	Qmmp WavPack Input Plugin
+Group:		Sound
+
+%description wavpack
+This is the WavPack Input Plugin for Qmmp.
+
+%files wavpack
+%doc AUTHORS ChangeLog
+%{_libdir}/%{name}/Input/libwavpack.so
 
 #----------------------------------------------------------------------------
 
@@ -401,3 +389,4 @@ This contains basic plug-in distribution.
 
 %install
 %makeinstall_std -C build
+
