@@ -1,4 +1,4 @@
-%define major		0
+%define major		1
 %define libname		%mklibname %{name} %{major}
 %define devname		%mklibname %{name} -d
 %define libnameui	%mklibname qmmpui %{major}
@@ -16,7 +16,7 @@
 
 Summary:	Qt-based Multimedia Player
 Name:		qmmp
-Version:	0.8.0
+Version:	1.0.4
 Release:	1%{?extrarelsuffix}
 License:	GPLv2+
 Group:		Sound
@@ -27,8 +27,8 @@ BuildRequires:	cmake
 BuildRequires:	ffmpeg-devel
 BuildRequires:	libgme-devel
 BuildRequires:	libmpcdec-devel
-BuildRequires:	qt4-devel
-BuildRequires:	qt4-linguist
+BuildRequires:	qt5-devel
+BuildRequires:	qt5-linguist
 BuildRequires:	wildmidi-devel
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(enca)
@@ -46,7 +46,7 @@ BuildRequires:	pkgconfig(mad)
 BuildRequires:	pkgconfig(samplerate)
 BuildRequires:	pkgconfig(sndfile)
 BuildRequires:	pkgconfig(taglib)
-BuildRequires:	pkgconfig(udisks)
+BuildRequires:	pkgconfig(udisks2)
 BuildRequires:	pkgconfig(vorbis)
 BuildRequires:	pkgconfig(wavpack)
 BuildRequires:	sidplay-devel
@@ -60,9 +60,9 @@ BuildRequires:	pkgconfig(opus)
 
 
 %if %{build_plf}
-BuildRequires:	libfaad2-devel
+BuildRequires:	faad2-devel
 %else
-BuildConflicts:	libfaad2-devel
+BuildConflicts:	faad2-devel
 %endif
 Requires:	unzip
 Requires:	%{libname} = %{EVRD}
@@ -382,7 +382,7 @@ This contains basic plug-in distribution.
 %{_libdir}/%{name}/Visual/libanalyzer.so
 %{_libdir}/%{name}/Visual/libprojectm.so
 
-%{_libdir}/%{name}/Ui/libskinned.so
+%{_libdir}/%{name}/Ui
 
 #----------------------------------------------------------------------------
 
@@ -391,7 +391,7 @@ This contains basic plug-in distribution.
 
 %build
 #oss3 support is deprecated upstream for now I'll enable it ...
-%cmake_qt4 -DUSE_HAL:BOOL=FALSE \
+%cmake_qt5 -DUSE_HAL:BOOL=FALSE \
 	-DUSE_OSS:BOOL=TRUE \
 	-DUSE_OSS:UDISKS2=TRUE \
 	-DUSE_RPATH=TRUE \
