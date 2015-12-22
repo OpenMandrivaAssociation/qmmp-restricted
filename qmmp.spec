@@ -29,6 +29,7 @@ BuildRequires:	libgme-devel
 BuildRequires:	libmpcdec-devel
 BuildRequires:	qt5-devel
 BuildRequires:	qt5-linguist
+BuildRequires:	cmake(Qt5LinguistTools)
 BuildRequires:	wildmidi-devel
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(enca)
