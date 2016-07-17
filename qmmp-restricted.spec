@@ -30,6 +30,7 @@ BuildRequires:	libmpcdec-devel
 BuildRequires:	qt5-devel
 BuildRequires:	qt5-linguist
 BuildRequires:	pkgconfig(Qt5X11Extras)
+BuildRequires:	pkgconfig(Qt5Multimedia)
 BuildRequires:	cmake(Qt5LinguistTools)
 BuildRequires:	wildmidi-devel
 BuildRequires:	pkgconfig(alsa)
