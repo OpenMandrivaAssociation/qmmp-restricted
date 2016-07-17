@@ -29,8 +29,8 @@ BuildRequires:	libgme-devel
 BuildRequires:	libmpcdec-devel
 BuildRequires:	qt5-devel
 BuildRequires:	qt5-linguist
-BuildRequires:	pkgconfig(Qt5X11Extras)
 BuildRequires:	pkgconfig(Qt5Multimedia)
+BuildRequires:	pkgconfig(Qt5X11Extras)
 BuildRequires:	cmake(Qt5LinguistTools)
 BuildRequires:	wildmidi-devel
 BuildRequires:	pkgconfig(alsa)
@@ -344,6 +344,8 @@ This contains basic plug-in distribution.
 %{_libdir}/%{name}/Output/libalsa.so
 %{_libdir}/%{name}/Output/libpulseaudio.so
 %{_libdir}/%{name}/Output/libnull.so
+%{_libdir}/%{name}/Output/libqtmultimedia.so
+%{_libdir}/%{name}/Output/libsoxr.so
 
 %{_libdir}/%{name}/General/libnotifier.so
 %{_libdir}/%{name}/General/libscrobbler.so
@@ -378,6 +380,7 @@ This contains basic plug-in distribution.
 %{_libdir}/%{name}/Engines/libmplayer.so
 
 %{_libdir}/%{name}/FileDialogs/libqmmpfiledialog.so
+%{_libdir}/%{name}/FileDialogs/libtwopanelfiledialog.so
 
 %{_libdir}/%{name}/Transports/libhttp.so
 %{_libdir}/%{name}/Transports/libmms.so
