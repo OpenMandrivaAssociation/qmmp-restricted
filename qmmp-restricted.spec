@@ -22,7 +22,7 @@ License:	GPLv2+
 Group:		Sound
 Url:		http://qmmp.ylsoftware.com/index_en.php
 Source:		http://qmmp.ylsoftware.com/files/%{name}-%{version}.tar.bz2
-
+Patch1:		qmmp-1.2.0-ffmpeg3.5.patch
 BuildRequires:	cmake
 BuildRequires:	ffmpeg-devel
 BuildRequires:	libgme-devel
@@ -397,6 +397,7 @@ This contains basic plug-in distribution.
 
 %prep
 %setup -q
+%apply_patches
 
 %build
 #oss3 support is deprecated upstream for now I'll enable it ...
