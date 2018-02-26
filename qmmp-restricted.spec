@@ -16,7 +16,7 @@
 
 Summary:	Qt-based Multimedia Player
 Name:		qmmp
-Version:	1.1.1
+Version:	1.2.0
 Release:	1%{?extrarelsuffix}
 License:	GPLv2+
 Group:		Sound
@@ -59,7 +59,8 @@ BuildRequires:	pkgconfig(sdl)
 BuildRequires:	pkgconfig(libsidplayfp)
 BuildRequires:	pkgconfig(opusfile)
 BuildRequires:	pkgconfig(opus)
-
+BuildRequires:	pkgconfig(shout)
+BuildRequires:	pkgconfig(libarchive)
 
 
 %if %{build_plf}
@@ -340,11 +341,13 @@ This contains basic plug-in distribution.
 %{_libdir}/%{name}/Input/libcue.so
 %{_libdir}/%{name}/Input/libgme.so
 %{_libdir}/%{name}/Input/libwildmidi.so
+%{_libdir}/%{name}/Input/libarchive.so
 
 %{_libdir}/%{name}/Output/libalsa.so
 %{_libdir}/%{name}/Output/libpulseaudio.so
 %{_libdir}/%{name}/Output/libnull.so
 %{_libdir}/%{name}/Output/libqtmultimedia.so
+%{_libdir}/%{name}/Output/libshout.so
 
 %{_libdir}/%{name}/General/libnotifier.so
 %{_libdir}/%{name}/General/libscrobbler.so
@@ -375,6 +378,7 @@ This contains basic plug-in distribution.
 %{_libdir}/%{name}/Effect/libladspa.so
 %{_libdir}/%{name}/Effect/libcrossfade.so
 %{_libdir}/%{name}/Effect/libstereo.so
+%{_libdir}/%{name}/Effect/libfilewriter.so
 
 %{_libdir}/%{name}/Engines/libmplayer.so
 
