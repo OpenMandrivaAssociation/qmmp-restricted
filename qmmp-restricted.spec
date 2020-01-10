@@ -399,7 +399,7 @@ This contains basic plug-in distribution.
 
 %prep
 %setup -q
-%apply_patches
+%autopatch -p1
 
 %build
 #oss3 support is deprecated upstream for now I'll enable it ...
