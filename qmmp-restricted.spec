@@ -20,7 +20,7 @@ Version:	1.2.0
 Release:	1%{?extrarelsuffix}
 License:	GPLv2+
 Group:		Sound
-Url:		http://qmmp.ylsoftware.com/index_en.php
+Url:		https://qmmp.ylsoftware.com/index_en.php
 Source:		http://qmmp.ylsoftware.com/files/%{name}-%{version}.tar.bz2
 Patch1:		qmmp-1.2.0-ffmpeg3.5.patch
 BuildRequires:	cmake
