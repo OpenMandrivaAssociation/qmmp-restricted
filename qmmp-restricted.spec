@@ -1,4 +1,7 @@
-%define major		1
+%define _disable_ld_no_undefined 1
+
+%define major		2
+%define major2		%(echo %{version} |cut -d. -f1-2)
 %define libname		%mklibname %{name} %{major}
 %define devname		%mklibname %{name} -d
 %define libnameui	%mklibname qmmpui %{major}
@@ -16,27 +19,50 @@
 
 Summary:	Qt-based Multimedia Player
 Name:		qmmp
-Version:	1.2.0
-Release:	1%{?extrarelsuffix}
+Version:	2.4.0
+Release:	101
 License:	GPLv2+
 Group:		Sound
-Url:		https://qmmp.ylsoftware.com/index_en.php
-Source:		http://qmmp.ylsoftware.com/files/%{name}-%{version}.tar.bz2
-Patch1:		qmmp-1.2.0-ffmpeg3.5.patch
+Url:		https://qmmp.ylsoftware.com/
+Source:		https://qmmp.ylsoftware.com/files/%{name}/%{major2}/%{name}-%{version}.tar.bz2
+Patch0:		qmmp-2.1.1-compile.patch
+
+BuildRequires:	make
 BuildRequires:	cmake
+BuildRequires:	cmake(qt6)
+BuildRequires:	qmake-qt6
 BuildRequires:	ffmpeg-devel
 BuildRequires:	libgme-devel
 BuildRequires:	libmpcdec-devel
-BuildRequires:	qt5-devel
-BuildRequires:	qt5-linguist
-BuildRequires:	pkgconfig(Qt5Multimedia)
-BuildRequires:	pkgconfig(Qt5X11Extras)
-BuildRequires:	cmake(Qt5LinguistTools)
+#BuildRequires:	qt5-devel
+#BuildRequires:	qt5-linguist
+BuildRequires:	cmake(Qt6Core)
+BuildRequires:	cmake(Qt6Concurrent)
+BuildRequires:	cmake(Qt6Gui)
+BuildRequires:	cmake(Qt6GuiTools)
+BuildRequires:	cmake(Qt6Widgets)
+BuildRequires:	cmake(Qt6Multimedia)
+#BuildRequires:	%{_lib}Qt6Multimedia-devel
+BuildRequires:	cmake(Qt6Network)
+BuildRequires:	cmake(Qt6DBus)
+BuildRequires:	cmake(Qt6OpenGLWidgets)
+BuildRequires:	cmake(Qt6Sql)
+BuildRequires:	cmake(Qt6OpenGL)
+BuildRequires:	cmake(Qt6OpenGLWidgets)
+#BuildRequires:	cmake(Qt6Linguist)
+BuildRequires:	cmake(Qt6LinguistTools)
+BuildRequires:	qt6-qttools
+BuildRequires:	pkgconfig(opengl)
+BuildRequires:  qt6-qtmultimedia-gstreamer
+#BuildRequires:	pkgconfig(Qt5Multimedia)
+#BuildRequires:	pkgconfig(Qt5X11Extras)
+#BuildRequires:	cmake(Qt5LinguistTools)
 BuildRequires:	wildmidi-devel
 BuildRequires:	pkgconfig(alsa)
 BuildRequires:	pkgconfig(enca)
 BuildRequires:	pkgconfig(flac)
 BuildRequires:	pkgconfig(jack)
+BuildRequires:  pkgconfig(libarchive)
 BuildRequires:	pkgconfig(libbs2b)
 BuildRequires:	pkgconfig(libcddb)
 BuildRequires:	pkgconfig(libcdio)
@@ -47,15 +73,22 @@ BuildRequires:	pkgconfig(libmms)
 BuildRequires:	pkgconfig(libmodplug)
 BuildRequires:	pkgconfig(libprojectM)
 BuildRequires:	pkgconfig(libpulse)
+BuildRequires:	pkgconfig(libpipewire-0.3)
+BuildRequires:	pkgconfig(librcd)
+BuildRequires:	pkgconfig(libspa-0.2)
+BuildRequires:  pkgconfig(libsidplayfp)
 BuildRequires:	pkgconfig(mad)
+BuildRequires:  pkgconfig(libmpg123)
 BuildRequires:	pkgconfig(samplerate)
+BuildRequires:  pkgconfig(shout)
 BuildRequires:	pkgconfig(sndfile)
-BuildRequires:	pkgconfig(taglib)
+BuildRequires:	pkgconfig(taglib) >= 1.12
 BuildRequires:	pkgconfig(udisks2)
 BuildRequires:	pkgconfig(vorbis)
 BuildRequires:	pkgconfig(wavpack)
 BuildRequires:	sidplay-devel
-BuildRequires:	pkgconfig(libsidplay2)
+#libsidplay2 was pulled out from cooker. So build only with sidplay-devel(1).(penguin)
+#BuildRequires:	pkgconfig(libsidplay)
 # do not remove sdl-headers needed by sid-ogg.Sflo
 BuildRequires:	pkgconfig(sdl)
 BuildRequires:	pkgconfig(libsidplayfp)
@@ -63,30 +96,34 @@ BuildRequires:	pkgconfig(opusfile)
 BuildRequires:	pkgconfig(opus)
 BuildRequires:	pkgconfig(shout)
 BuildRequires:	pkgconfig(libarchive)
-
-
+BuildRequires:	pkgconfig(jack)
+BuildRequires:	pkgconfig(shout)
+BuildRequires:	pkgconfig(soxr)
+BuildRequires:	pkgconfig(vulkan)
+BuildRequires:	vulkan-headers
+BuildRequires:	pkgconfig(xkbcommon)
 %if %{build_plf}
-BuildRequires:	faad2-devel
+BuildRequires:	pkgconfig(faad2)
+BuildRequires:	pkgconfig(fdk-aac)
 %else
-BuildConflicts:	faad2-devel
+BuildConflicts: pkgconfig(faad2)
+BuildConflicts:	pkgconfig(fdk-aac)
 %endif
 Requires:	unzip
 Requires:	%{libname} = %{EVRD}
 Requires:	%{libnameui} = %{EVRD}
 Requires:	%{name}-plugins = %{EVRD}
-Suggests:	%{name}-aac = %{EVRD}
-%if %{mdvver} >= 201210
-Suggests:	%{name}-ffmpeg = %{EVRD}
-%else
-Suggests:	%{name}-ffmpeg-legacy = %{EVRD}
-%endif
-Suggests:	%{name}-jack = %{EVRD}
-Suggests:	%{name}-modplug = %{EVRD}
-Suggests:	%{name}-musepack = %{EVRD}
-Suggests:	%{name}-oss = %{EVRD}
-Suggests:	%{name}-wavpack = %{EVRD}
-Suggests:	%{name}-plugin-pack
-Requires:	wildmidi
+Recommends:	%{name}-aac = %{EVRD}
+Recommends:	%{name}-ffmpeg = %{EVRD}
+Recommends:	%{name}-jack = %{EVRD}
+Recommends:	%{name}-modplug = %{EVRD}
+# Seems to be removed in 1.3.x?
+Obsoletes:	%{name}-musepack < %{EVRD}
+Recommends:	%{name}-oss = %{EVRD}
+Recommends:	%{name}-wavpack = %{EVRD}
+Recommends:	%{name}-plugin-pack
+#This package depend on timidity-patch-SGMPlusStein and it cost us 618.39 MB disc space... Not needed, make it suggects (penguin)
+Suggests:	wildmidi
 
 %description
 This program is an audio-player, written with help of Qt library. The user
@@ -117,6 +154,7 @@ Main opportunities:
 %doc AUTHORS ChangeLog
 %{_bindir}/%{name}
 %{_datadir}/applications/*.desktop
+%{_datadir}/solid/actions/%{name}-opencda.desktop
 %{_iconsdir}/hicolor/*/apps/*
 %{_datadir}/%{name}
 
@@ -201,79 +239,11 @@ This package is in restricted repository because AAC codec is patent-protected.
 
 %files -n %{name}-aac
 %doc AUTHORS ChangeLog
-%{_libdir}/%{name}/Input/libaac.so
+%{_libdir}/%{name}-%{major2}/Input/libaac.so
 %endif
 
 #----------------------------------------------------------------------------
 
-#  ffmpeg-legacy in LTS
-%if %{mdvver} >= 201210
-%package -n %{name}-ffmpeg
-Summary:	Qmmp FFMPEG Input Plugin
-Group:		Sound
-
-%description -n %{name}-ffmpeg
-This is the FFMPEG Input Plugin for Qmmp.
-
-%files -n %{name}-ffmpeg
-%doc AUTHORS ChangeLog
-%{_libdir}/%{name}/Input/libffmpeg.so
-
-%else
-
-%package -n %{name}-ffmpeg-legacy
-Summary:	Qmmp FFMPEG Input Plugin
-Group:		Sound
-
-%description -n %{name}-ffmpeg-legacy
-This is the FFMPEG Input Plugin for Qmmp.
-
-%files -n %{name}-ffmpeg-legacy
-%doc AUTHORS ChangeLog
-%{_libdir}/%{name}/Input/libffmpeg_legacy.so
-%endif
-
-#----------------------------------------------------------------------------
-
-%package -n %{name}-jack
-Summary:	Qmmp Jack Output Plugin
-Group:		Sound
-
-%description -n %{name}-jack
-This is the Jack Output Plugin for Qmmp.
-
-%files -n %{name}-jack
-%doc AUTHORS ChangeLog
-%{_libdir}/%{name}/Output/libjack.so
-
-
-#----------------------------------------------------------------------------
-
-%package -n %{name}-modplug
-Summary:	Qmmp Modplug Input Plugin
-Group:		Sound
-
-%description -n %{name}-modplug
-This is the Modplug Input Plugin for Qmmp.
-
-%files -n %{name}-modplug
-%doc AUTHORS ChangeLog
-%{_libdir}/%{name}/Input/libmodplug.so
-
-#----------------------------------------------------------------------------
-
-%package -n %{name}-musepack
-Summary:	Qmmp MusePack Output Plugin
-Group:		Sound
-
-%description -n %{name}-musepack
-This is the Musepack Input Plugin for Qmmp.
-
-%files -n %{name}-musepack
-%doc AUTHORS ChangeLog
-%{_libdir}/%{name}/Input/libmpc.so
-
-#----------------------------------------------------------------------------
 
 %package -n %{name}-oss
 Summary:	Qmmp OSS Output Plugin
@@ -284,7 +254,7 @@ This is the Jack OSS Plugin for Qmmp.
 
 %files -n %{name}-oss
 %doc AUTHORS ChangeLog
-%{_libdir}/%{name}/Output/liboss.so
+%{_libdir}/%{name}-%{major2}/Output/liboss.so
 
 #----------------------------------------------------------------------------
 
@@ -297,7 +267,7 @@ This is the WavPack Input Plugin for Qmmp.
 
 %files -n %{name}-wavpack
 %doc AUTHORS ChangeLog
-%{_libdir}/%{name}/Input/libwavpack.so
+%{_libdir}/%{name}-%{major2}/Input/libwavpack.so
 
 #----------------------------------------------------------------------------
 %package -n %{name}-opus
@@ -309,7 +279,7 @@ This is the Opus Input Plugin for Qmmp.
 
 %files -n %{name}-opus
 %doc AUTHORS ChangeLog
-%{_libdir}/%{name}/Input/libopus.so
+#{_libdir}/%{name}-%{major2}/Input/libopus.so
 
 #----------------------------------------------------------------------------
 %package -n %{name}-sid
@@ -321,7 +291,7 @@ This is the SID Input Plugin for Qmmp.
 
 %files -n %{name}-sid
 %doc AUTHORS ChangeLog
-%{_libdir}/%{name}/Input/libsid.so
+%{_libdir}/%{name}-%{major2}/Input/libsid.so
 
 #----------------------------------------------------------------------------
 
@@ -335,81 +305,99 @@ This contains basic plug-in distribution.
 
 %files -n %{name}-plugins
 %doc AUTHORS ChangeLog
-%{_libdir}/%{name}/Input/libflac.so
-%{_libdir}/%{name}/Input/libmad.so
-%{_libdir}/%{name}/Input/libsndfile.so
-%{_libdir}/%{name}/Input/libvorbis.so
-%{_libdir}/%{name}/Input/libcdaudio.so
-%{_libdir}/%{name}/Input/libcue.so
-%{_libdir}/%{name}/Input/libgme.so
-%{_libdir}/%{name}/Input/libwildmidi.so
-%{_libdir}/%{name}/Input/libarchive.so
 
-%{_libdir}/%{name}/Output/libalsa.so
-%{_libdir}/%{name}/Output/libpulseaudio.so
-%{_libdir}/%{name}/Output/libnull.so
-%{_libdir}/%{name}/Output/libqtmultimedia.so
-%{_libdir}/%{name}/Output/libshout.so
+%{_libdir}/%{name}-%{major2}/Input/libarchive.so
+%{_libdir}/%{name}-%{major2}/Input/libffmpeg.so
+%{_libdir}/%{name}-%{major2}/Input/libflac.so
+%{_libdir}/%{name}-%{major2}/Input/libsndfile.so
+%{_libdir}/%{name}-%{major2}/Input/libopus.so
+%{_libdir}/%{name}-%{major2}/Input/libvorbis.so
+%{_libdir}/%{name}-%{major2}/Input/libcdaudio.so
+%{_libdir}/%{name}-%{major2}/Input/libcue.so
+%{_libdir}/%{name}-%{major2}/Input/libgme.so
+%{_libdir}/%{name}-%{major2}/Input/libwildmidi.so
+%{_libdir}/%{name}-%{major2}/Input/libmpeg.so
 
-%{_libdir}/%{name}/General/libnotifier.so
-%{_libdir}/%{name}/General/libscrobbler.so
-%{_libdir}/%{name}/General/libstatusicon.so
-%{_libdir}/%{name}/General/libfileops.so
-%{_libdir}/%{name}/General/libhotkey.so
-%{_libdir}/%{name}/General/liblyrics.so
-%{_libdir}/%{name}/General/libmpris.so
-%{_libdir}/%{name}/General/libcovermanager.so
-%{_libdir}/%{name}/General/libkdenotify.so
-%{_libdir}/%{name}/General/libstreambrowser.so
-%{_libdir}/%{name}/General/libconverter.so
-%{_libdir}/%{name}/General/libcopypaste.so
-%{_libdir}/%{name}/General/libtrackchange.so
-%{_libdir}/%{name}/General/libudisks2.so
-%{_libdir}/%{name}/General/libgnomehotkey.so
-%{_libdir}/%{name}/General/librgscan.so
+%{_datadir}/metainfo/com.ylsoftware.qmmp.metainfo.xml
 
-%{_libdir}/%{name}/PlayListFormats/*
+%{_libdir}/%{name}-%{major2}/Output/libalsa.so
+%{_libdir}/%{name}-%{major2}/Output/libjack.so
+%{_libdir}/%{name}-%{major2}/Output/libpulseaudio.so
+%{_libdir}/%{name}-%{major2}/Output/libnull.so
+%{_libdir}/%{name}-%{major2}/Output/libqtmultimedia.so
+%{_libdir}/%{name}-%{major2}/Output/libshout.so
+%{_libdir}/%{name}-%{major2}/Output/libpipewire.so
 
-%{_libdir}/%{name}/CommandLineOptions/libincdecvolumeoption.so
-%{_libdir}/%{name}/CommandLineOptions/libseekoption.so
-%{_libdir}/%{name}/CommandLineOptions/libstatusoption.so
-%{_libdir}/%{name}/CommandLineOptions/libplaylistoption.so
+%{_libdir}/%{name}-%{major2}/General/libconverter.so
+%{_libdir}/%{name}-%{major2}/General/librgscan.so
+%{_libdir}/%{name}-%{major2}/General/libnotifier.so
+%{_libdir}/%{name}-%{major2}/General/libscrobbler.so
+%{_libdir}/%{name}-%{major2}/General/libstatusicon.so
+%{_libdir}/%{name}-%{major2}/General/libfileops.so
+%{_libdir}/%{name}-%{major2}/General/libhistory.so
+%{_libdir}/%{name}-%{major2}/General/libhotkey.so
+%{_libdir}/%{name}-%{major2}/General/liblibrary.so
+%{_libdir}/%{name}-%{major2}/General/liblyrics.so
+%{_libdir}/%{name}-%{major2}/General/libbatchtageditor.so
+%{_libdir}/%{name}-%{major2}/General/libmpris.so
+%{_libdir}/%{name}-%{major2}/General/libcovermanager.so
+%{_libdir}/%{name}-%{major2}/General/libkdenotify.so
+%{_libdir}/%{name}-%{major2}/General/libstreambrowser.so
+#{_libdir}/%{name}-%{major2}/General/libconverter.so
+%{_libdir}/%{name}-%{major2}/General/libcopypaste.so
+%{_libdir}/%{name}-%{major2}/General/libtrackchange.so
+%{_libdir}/%{name}-%{major2}/General/libudisks.so
+%{_libdir}/%{name}-%{major2}/General/libgnomehotkey.so
+#{_libdir}/%{name}-%{major2}/General/librgscan.so
+%{_libdir}/%{name}-%{major2}/General/liblistenbrainz.so
+%{_libdir}/%{name}-%{major2}/General/libsleepinhibitor.so
 
-%{_libdir}/%{name}/Effect/libsoxr.so
-%{_libdir}/%{name}/Effect/libbs2b.so
-%{_libdir}/%{name}/Effect/libladspa.so
-%{_libdir}/%{name}/Effect/libcrossfade.so
-%{_libdir}/%{name}/Effect/libstereo.so
-%{_libdir}/%{name}/Effect/libfilewriter.so
+%{_libdir}/%{name}-%{major2}/PlayListFormats/*
 
-%{_libdir}/%{name}/Engines/libmplayer.so
+%{_libdir}/%{name}-%{major2}/CommandLineOptions/libincdecvolumeoption.so
+%{_libdir}/%{name}-%{major2}/CommandLineOptions/libseekoption.so
+%{_libdir}/%{name}-%{major2}/CommandLineOptions/libstatusoption.so
+%{_libdir}/%{name}-%{major2}/CommandLineOptions/libplaylistoption.so
 
-%{_libdir}/%{name}/FileDialogs/libqmmpfiledialog.so
-%{_libdir}/%{name}/FileDialogs/libtwopanelfiledialog.so
+#{_libdir}/%{name}-%{major2}/Effect/libsoxr.so
+%{_libdir}/%{name}-%{major2}/Effect/libbs2b.so
+%{_libdir}/%{name}-%{major2}/Effect/libladspa.so
+%{_libdir}/%{name}-%{major2}/Effect/libcrossfade.so
+%{_libdir}/%{name}-%{major2}/Effect/libmonotostereo.so
+%{_libdir}/%{name}-%{major2}/Effect/libstereo.so
+%{_libdir}/%{name}-%{major2}/Effect/libsoxr.so
+%{_libdir}/%{name}-%{major2}/Effect/libfilewriter.so
 
-%{_libdir}/%{name}/Transports/libhttp.so
-%{_libdir}/%{name}/Transports/libmms.so
+%{_libdir}/%{name}-%{major2}/FileDialogs/libqmmpfiledialog.so
+%{_libdir}/%{name}-%{major2}/FileDialogs/libtwopanelfiledialog.so
 
-%{_libdir}/%{name}/Visual/libanalyzer.so
-%{_libdir}/%{name}/Visual/libprojectm.so
+%{_libdir}/%{name}-%{major2}/Transports/libhttp.so
 
-%{_libdir}/%{name}/Ui
+%{_libdir}/%{name}-%{major2}/Visual/libanalyzer.so
+%optional %{_libdir}/%{name}-%{major2}/Visual/libprojectm.so
+
+%{_libdir}/%{name}-%{major2}/Ui
 
 #----------------------------------------------------------------------------
 
 %prep
-%setup -q
-%autopatch -p1
+%autosetup -p1
 
 %build
 #oss3 support is deprecated upstream for now I'll enable it ...
-%cmake_qt5 -DUSE_HAL:BOOL=FALSE \
+%cmake -DUSE_HAL:BOOL=FALSE \
 	-DUSE_OSS:BOOL=TRUE \
 	-DUSE_OSS:UDISKS2=TRUE \
 	-DUSE_RPATH=TRUE \
+	-DUSE_FLAC=TRUE \
+	-DUSE_VORBIS=TRUE \
+	-DUSE_MPC=TRUE \
+	-DUSE_ARCHIVE=TRUE \
+	-DUSE_FFMPEG=TRUE \
+	-DUSE_OPUS=TRUE \
 	-DCMAKE_INSTALL_PREFIX=/usr
 
-%make
+%make_build
 
 %install
-%makeinstall_std -C build
+%make_install -C build
